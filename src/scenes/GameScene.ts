@@ -1,18 +1,22 @@
 export class GameScene extends Phaser.Scene {
-    private text: Phaser.GameObjects.Text | null = null;
     private counter: number = 0;
 
     constructor() {
         super({ key: 'GameScene' });
     }
 
+    preload() {
+        // NOTE: Загружаем изображение
+        this.load.image('button', 'assets/button.png');
+    }
+
     // NOTE: Вызоветься при создании сцены
     create(): void {
         // NOTE: Добавляем текст в центр экрана
-        this.text = this.add.text(
+        const text = this.add.text(
             this.cameras.main.centerX,
             this.cameras.main.centerY,
-            'Welcome to Guess Word Game!\nClick anywhere to start',
+            'Welcome to Guess Word Game!\nClick on button :)',
             {
                 fontSize: '40px',
                 color: '#ffffff',
@@ -21,10 +25,17 @@ export class GameScene extends Phaser.Scene {
             }
         ).setOrigin(0.5);
 
-        // NOTE: Считываение нажатия мыши 
-        this.input.on('pointerdown', () => {
+        // NOTE: Добавляем изображение
+        const sprite = this.add.sprite(
+            this.cameras.main.centerX,
+            this.cameras.main.centerY + 100,
+            'button'
+        );
+
+        sprite.setInteractive();
+        sprite.on('pointerdown', () => {
             this.counter++;
-            this.text?.setText(`Clicks: ${this.counter}\nKeep clicking!`);
+            text.setText(`Clicks: ${this.counter}\nKeep clicking!`);
         });
     }
 
