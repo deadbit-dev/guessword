@@ -1,4 +1,10 @@
-export class GameScene extends Phaser.Scene {
+import { SYSTEM_CONFIG } from "../config";
+
+
+export class Game extends Phaser.Scene {
+    private text!: Phaser.GameObjects.Text;
+    private pingText!: Phaser.GameObjects.Text;
+
     private counter: number = 0;
 
     constructor() {
@@ -6,14 +12,17 @@ export class GameScene extends Phaser.Scene {
     }
 
     preload() {
+        // NOTE: Подключаемся к серверу
+        Network.connect(SYSTEM_CONFIG.hostname, SYSTEM_CONFIG.port);
+
         // NOTE: Загружаем изображение
         this.load.image('button', 'assets/button.png');
     }
 
-    // NOTE: Вызоветься при создании сцены
+    // NOTE: Вызывается при создании сцены
     create(): void {
         // NOTE: Добавляем текст в центр экрана
-        const text = this.add.text(
+        this.text = this.add.text(
             this.cameras.main.centerX,
             this.cameras.main.centerY,
             'Welcome to Guess Word Game!\nClick on button :)',
@@ -32,14 +41,20 @@ export class GameScene extends Phaser.Scene {
             'button'
         );
 
+        // NOTE: Добавляем обработчик нажатия на кнопку/sprite
         sprite.setInteractive();
         sprite.on('pointerdown', () => {
             this.counter++;
-            text.setText(`Clicks: ${this.counter}\nKeep clicking!`);
+            this.text.setText(`Clicks: ${this.counter}\nKeep clicking!`);
         });
+
+        // NOTE: Добавляем текст для отображения пинга
+        this.pingText = this.add.text(0, 0, `Ping: ${Network.get_current_ping()}ms`);
     }
 
+    // NOTE: Вызывается каждый кадр
     update(): void {
-        // NOTE: вызывается каждый кадр
+        // NOTE: Обновляем текст пинга
+        this.pingText.setText(`Ping: ${Network.get_current_ping()}ms`);
     }
 }

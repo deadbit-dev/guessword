@@ -1,13 +1,17 @@
 import 'phaser';
-import { GameScene } from './scenes/GameScene';
+import { register_network } from './network';
+import { Game } from './scenes/game';
 
 const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.WEBGL,
-    width: 800,
-    height: 600,
+    width: 600,
+    height: 800,
     parent: 'game-container',
     backgroundColor: '#141414',
-    scene: [GameScene],
+    scene: [Game],
 };
+
+// NOTE: Register modules
+register_network();
 
 new Phaser.Game(config);
