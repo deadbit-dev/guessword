@@ -3,11 +3,12 @@
     "version": "1.0.0",
     "description": "A Phaser game project with TypeScript",
     "main": "dist/index.js",
+    "packageManager": "bun@1.0.0",
     "scripts": {
-        "build": "webpack --mode production",
-        "dev": "webpack serve --mode development",
-        "start": "webpack serve --mode development --open",
-        "clean": "rimraf dist"
+        "build": "bun run webpack --mode production",
+        "dev": "bun run webpack serve --mode development",
+        "start": "bun run webpack serve --mode development --open",
+        "clean": "bun run rimraf dist"
     },
     "keywords": [
         "phaser",
@@ -20,6 +21,7 @@
         "@types/node": "^20.10.0",
         "copy-webpack-plugin": "^11.0.0",
         "html-webpack-plugin": "^5.5.3",
+        "path-browserify": "^1.0.1",
         "rimraf": "^5.0.5",
         "ts-loader": "^9.5.1",
         "typescript": "^5.3.2",

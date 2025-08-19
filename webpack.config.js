@@ -15,6 +15,11 @@ module.exports = {
     },
     resolve: {
         extensions: ['.ts', '.js'],
+        fallback: {
+            "path": require.resolve("path-browserify"),
+            "fs": false,
+            "crypto": false
+        }
     },
     output: {
         filename: 'bundle.js',

@@ -1,54 +1,62 @@
-# Guess Word Game
+# GuessWord Game
 
-Проект игры на Phaser с TypeScript.
+A Phaser game project with TypeScript, now using Bun as package manager.
 
-## Установка
+## Prerequisites
 
-```bash
-npm install
-```
+- [Bun](https://bun.sh/) - Fast JavaScript runtime and package manager
+- Node.js (for webpack compatibility)
 
-## Запуск в режиме разработки
-
-```bash
-npm run dev
-```
-
-Игра откроется в браузере по адресу http://localhost:8080
-
-## Сборка для продакшена
+## Installation
 
 ```bash
-npm run build
+# Install dependencies using Bun
+bun install
 ```
 
-## Структура проекта
+## Development
+
+```bash
+# Start development server
+bun run dev
+
+# Start development server and open browser
+bun run start
+```
+
+## Building
+
+```bash
+# Build for production
+bun run build
+
+# Clean build directory
+bun run clean
+```
+
+## Available Scripts
+
+- `bun run install` - Install dependencies
+- `bun run dev` - Start development server
+- `bun run start` - Start development server and open browser
+- `bun run build` - Build for production
+- `bun run clean` - Clean build directory
+
+## Project Structure
 
 ```
 src/
-├── index.html          # HTML файл игры
-├── index.ts            # Точка входа
-├── scenes/             # Сцены игры
-│   └── GameScene.ts    # Основная сцена
-└── assets/             # Игровые ресурсы (изображения, звуки)
+├── assets/          # Game assets (images, sounds)
+├── scenes/          # Phaser game scenes
+├── config.ts        # Game configuration
+├── index.ts         # Main entry point
+├── network.ts       # Network communication
+└── protocol.ts      # Game protocol definitions
 ```
 
-## Технологии
+## Technologies
 
-- Phaser 3.70.0 - игровой движок
-- TypeScript 5.3.2 - типизированный JavaScript
-- Webpack 5 - сборщик модулей
-- Webpack Dev Server - сервер разработки
-
-## Настройка
-
-Все настройки находятся в файлах:
-- `tsconfig.json` - конфигурация TypeScript
-- `webpack.config.js` - конфигурация Webpack
-- `package.json` - зависимости и скрипты
-
-## Добавление новых сцен
-
-1. Создайте новый файл в папке `src/scenes/`
-2. Унаследуйте класс от `Phaser.Scene`
-3. Добавьте сцену в массив сцен в `src/index.ts`
+- **Phaser 3** - HTML5 game framework
+- **TypeScript** - Type-safe JavaScript
+- **Webpack** - Module bundler
+- **Bun** - Package manager and runtime
