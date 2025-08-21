@@ -1,11 +1,12 @@
 import { SYSTEM_CONFIG } from "../config";
+import { Keyboard } from "../keyboard";
+import { NetIdMessages, NetMessages } from "../protocol";
+import { random_position_in_bounds } from "../utils";
 
 
 export class Game extends Phaser.Scene {
-    private text!: Phaser.GameObjects.Text;
     private pingText!: Phaser.GameObjects.Text;
-
-    private counter: number = 0;
+    private keyboard!: Keyboard;
 
     constructor() {
         super({ key: 'GameScene' });
@@ -14,42 +15,32 @@ export class Game extends Phaser.Scene {
     preload() {
         // NOTE: Подключаемся к серверу
         Network.connect(SYSTEM_CONFIG.hostname, SYSTEM_CONFIG.port);
+        Network.addMessageListener(NetIdMessages.CONNECT, this.on_connect_other_client.bind(this));
 
         // NOTE: Загружаем изображение
         this.load.image('button', 'assets/button.png');
     }
 
+    // NOTE тестовый колбэк для отрисовки подключения других клиентов к серверу
+    on_connect_other_client(_: NetMessages[NetIdMessages.CONNECT]) {
+        // NOTE: Рисуем кружок в случайной точке экрана
+        const pos = random_position_in_bounds(0, 0, this.cameras.main.width, this.cameras.main.height);
+        this.add.circle(pos.x, pos.y, 10, 0xffffff, 1);
+    }
+
     // NOTE: Вызывается при создании сцены
     create(): void {
-        // NOTE: Добавляем текст в центр экрана
-        this.text = this.add.text(
-            this.cameras.main.centerX,
-            this.cameras.main.centerY,
-            'Welcome to Guess Word Game!\nClick on button :)',
-            {
-                fontSize: '40px',
-                color: '#ffffff',
-                align: 'center',
-                fontFamily: 'Arial'
-            }
-        ).setOrigin(0.5);
-
-        // NOTE: Добавляем изображение
-        const sprite = this.add.sprite(
-            this.cameras.main.centerX,
-            this.cameras.main.centerY + 100,
-            'button'
-        );
-
-        // NOTE: Добавляем обработчик нажатия на кнопку/sprite
-        sprite.setInteractive();
-        sprite.on('pointerdown', () => {
-            this.counter++;
-            this.text.setText(`Clicks: ${this.counter}\nKeep clicking!`);
+        // NOTE: Добавляем текст для отображения пинга
+        this.pingText = this.add.text(0, 0, `Ping: ${Network.get_current_ping()}ms`, {
+            fontFamily: 'Arial',
+            fontSize: '20px',
+            color: '#ffffff',
+            align: 'center',
+            backgroundColor: '#000000',
         });
 
-        // NOTE: Добавляем текст для отображения пинга
-        this.pingText = this.add.text(0, 0, `Ping: ${Network.get_current_ping()}ms`);
+        // NOTE: Добавляем клавиатуру
+        this.keyboard = new Keyboard(this, 0, 0);
     }
 
     // NOTE: Вызывается каждый кадр
